@@ -1,23 +1,6 @@
-// classes
-class Invoice {
-  client: string;
-  details: string;
-  amount: number;
-
-  constructor(c: string, d: string, a: number){
-    this.client = c;
-    this.details = d;
-    this.amount = a;
-  }
-  format() {
-    return `${this.client} owes €${this.amount} for ${this.details}`;
-  }
-}
-
-const invOne = new Invoice('Floki', 'work on a website', 250);
-const invTwo = new Invoice('Max', 'work on a website', 240);
-
-let invoices: Invoice[] = [];
+import { Invoice } from './classes/invoice.js';
+import { Payment } from './classes/payment.js';
+import { HasFormatter } from './interfaces/HasFormatter.js';
 
 // inputs
 const form = document.querySelector('.new-item-form') as HTMLFormElement;
@@ -30,10 +13,12 @@ const amount = document.querySelector('#amount') as HTMLInputElement;
 form.addEventListener('submit', (e: Event) => {
   e.preventDefault();
 
-  console.log(
-    type.value,
-    tofrom.value,
-    details.value,
-    amount.valueAsNumber
-  )
+  let doc: HasFormatter;
+  if (type.value === 'invoice'){
+    doc = new Invoice(tofrom.value, details.value, amount.valueAsNumber)
+  } else {
+    doc = new Payment(tofrom.value, details.value, amount.valueAsNumber)
+  }
+
+  console.log(doc)
 })
